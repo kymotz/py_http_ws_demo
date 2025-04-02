@@ -1,36 +1,31 @@
 # -*- mode: python ; coding: utf-8 -*-
 
-block_cipher = None
 
 a = Analysis(
-    ['demo.py'],
+    ['agent.py'],
     pathex=[],
     binaries=[],
     datas=[],
-    hiddenimports=['uvicorn.logging', 'uvicorn.protocols', 'uvicorn.lifespan', 'uvicorn.protocols.http', 'websockets'],
+    hiddenimports=['uvicorn.logging', 'uvicorn.protocols', 'uvicorn.lifespan', 'uvicorn.protocols.http', 'uvicorn.lifespan.on', 'uvicorn.lifespan.off', 'websockets'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
     excludes=[],
-    win_no_prefer_redirects=False,
-    win_private_assemblies=False,
-    cipher=block_cipher,
     noarchive=False,
+    optimize=0,
 )
-
-pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
+pyz = PYZ(a.pure)
 
 exe = EXE(
     pyz,
     a.scripts,
     a.binaries,
-    a.zipfiles,
     a.datas,
     [],
-    name='demo',
+    name='data-platform-agent',
     debug=False,
     bootloader_ignore_signals=False,
-    strip=True,
+    strip=False,
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,

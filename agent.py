@@ -7,6 +7,7 @@ from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.responses import PlainTextResponse, Response, StreamingResponse, HTMLResponse
 import uvicorn
 import io
+from util.mytest import plus
 
 # 获取应用所在目录（针对PyInstaller打包后的情况）
 def get_application_path():
@@ -219,23 +220,15 @@ def main():
 
     print("正在启动服务，请确保已安装WebSocket依赖...")
     
-    # 启动前检查是否安装了必要的WebSocket库
-    try:
-        import websockets
-        print("检测到websockets库")
-    except ImportError:
-        print("警告: 未检测到websockets库，WebSocket功能可能无法正常工作")
-        print("请运行: pip install websockets")
-    
     # 启动FastAPI应用，使用标准Uvicorn配置
     uvicorn.run(
         app, 
-        host="localhost", 
+        host="0.0.0.0", 
         port=8000,
         log_level="info"
     )
 
-if __name__ == "__main__":
+# 如果直接运行此模块，则调用main函数
+if __name__ == '__main__':
+    print("plus:" + str(plus(1, 2)))
     main()
-
-
