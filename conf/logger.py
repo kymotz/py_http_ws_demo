@@ -4,6 +4,8 @@ from loguru import logger
 from typing import Dict, Any
 
 class Logger:
+    _instance = None
+
     @staticmethod
     def make_filter(name: str):
         def filter(record):
@@ -14,7 +16,6 @@ class Logger:
     def init_logger(
         name: str, 
         log_path: str = "logs", 
-        level: str = "INFO",
         rotation: str = "10 MB",
         retention: str = "1 week"
     ):
@@ -37,7 +38,6 @@ class Logger:
         logger.add(
             sys.stdout,
             format=fmt,
-            level=level,
             filter=Logger.make_filter(name)
         )
         
@@ -45,11 +45,15 @@ class Logger:
         logger.add(
             os.path.join(log_path, f"{name}.log"),
             format=fmt,
-            level=level,
             rotation=rotation,
             retention=retention,
             filter=Logger.make_filter(name),
             encoding="utf-8"
         )
-        
         return logger.bind(name=name)
+
+    @staticmethod
+    def get_instance():
+        if Logger._instance is None:
+            Logger._instance = Logger.init_logger("main")
+        return Logger._instance

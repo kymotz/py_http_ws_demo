@@ -9,6 +9,9 @@ import uvicorn
 import io
 from util.mytest import plus
 
+from conf.logger import Logger
+
+
 # 获取应用所在目录（针对PyInstaller打包后的情况）
 def get_application_path():
     # 检查是否在PyInstaller环境中
@@ -41,6 +44,10 @@ async def websocket_endpoint(websocket: WebSocket):
 # 1. /hello 向接口返回 hello world 字符串
 @app.get("/hello", response_class=PlainTextResponse)
 async def hello_world():
+    log = Logger.get_instance()
+    log.info("服务启动中...")
+    log.warning("当前工作目录: " + os.getcwd())
+    log.error("当前工作目录: " + os.getcwd())
     return "hello world"
 
 # 3. /cat?path=xxx 获取指定路径下的文件内容
@@ -227,6 +234,7 @@ def main():
         port=8000,
         log_level="info"
     )
+
 
 # 如果直接运行此模块，则调用main函数
 if __name__ == '__main__':
